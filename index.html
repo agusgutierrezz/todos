@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Todo List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="dist/css/style.css">
+</head>
+<body>
+  <div class="todo-container container">
+    <h1>Todo List</h1>
+    <form id="task-form">
+        <input type="text" id="task-input" placeholder="Add a new task...">
+        <label for="priority">Priority:</label>
+        <select id="task-priority">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button id="add-task-btn" type="submit">Add Task</button>
+        <span id="error-message" class="error-message"></span>
+    </form>
+    <div class="filters">
+      <button class="filter-btn" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="completed">Completed</button>
+      <button class="filter-btn" data-filter="pending">Pending</button>
+    </div>
+    
+  <div id="pending-list-container">
+    <h3>Pending Tasks</h3>
+    <ul id="pending-list"></ul>
+    <span id="pending-message" class="no-tasks-message">No pending tasks yet.</span>
+
+  </div>
+  
+  <div id="completed-list-container">
+    <h3>Completed Tasks</h3>
+    <ul id="completed-list"></ul>
+    <span id="completed-message" class="no-tasks-message">No completed tasks yet.</span>
+    
+  </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
