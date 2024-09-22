@@ -1,46 +1,54 @@
 @import '_breakpoints';
 
 // Variables
-$primary-color: #4CAF50;
+$primary-color: #EB3F43;
 $completed-color: #d3d3d3;
+//extends
+%priority-tag {
+  padding:4px 10px;
+  font-size: 12px;
+  border:1px solid;
+  font-weight: bold;
+  border-radius: 33px;
+  text-transform: capitalize;
+}
 
-
-// Global Styless
+// Global Styles
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-
     background-color: #f4f4f4;
     margin: 0;
     padding: 20px;
 }
+
 .container {
     padding: 20px;
-    background-color: #f8f8f8;
-  
-    // Tablet (Medium) and up
+    background-color: #fff;
+
     @media (min-width: $breakpoint-md) {
-      padding: 30px;
+        padding: 30px;
     }
-  
-    // Desktop (Large) and up
+
     @media (min-width: $breakpoint-lg) {
-      padding: 40px;
+        padding: 40px;
     }
-  
-    // Large desktops (Extra Large)
+
     @media (min-width: $breakpoint-xl) {
-      padding: 50px;
+        padding: 50px;
     }
-  }
-// Container Styles
+}
+.brand{
+  display: flex;
+  align-items: center;
+  gap:8px;
+}
 
 // Input Styles
 #task-input {
-    width: calc(100% - 40px);
+    width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin-right: 10px;
 
     &:focus {
         outline: none;
@@ -70,11 +78,15 @@ button {
     }
 }
 
-// Task List Styles
-#task-list {
+.tasks-column {
     list-style-type: none;
+   flex-direction: column;
     padding: 0;
-
+ul{
+  list-style-type: none;
+  padding: 0;
+width: 100%;
+}
     .task-item {
         display: flex;
         justify-content: space-between;
@@ -85,15 +97,42 @@ button {
         border-radius: 4px;
 
         &.completed {
-            background-color: $completed-color;
-            text-decoration: line-through;
+         
         }
 
         .task-content {
             flex-grow: 1;
             margin-right: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap:8px;
+            p{
+              margin: 0;
+            }
+            .task-tag{
+         @extend %priority-tag ;
+            
         }
+      }
+        &[data-priority=low]{
+          .task-tag{
+     @extend .low-priority;  
+      }
+        }
+        &[data-priority=medium]{
+          .task-tag{
+    
+            @extend .medium-priority;  
 
+              }
+        }
+        &[data-priority=high]{
+          .task-tag{
+            @extend .high-priority;  
+
+              }
+        }
     }
 }
 
@@ -104,13 +143,8 @@ button {
     border: 1px solid #ccc;
 }
 
-.error-message {
-    color: red;
-    display: none; /* Hide by default */
-}
-.error-message.visible {
-    display: inline; /* Show when there's an error */
-}
+
+
 .task-container {
     display: flex;
     justify-content: space-between;
@@ -118,12 +152,11 @@ button {
 }
 
 .column {
-    width: 45%;
-}
+    width: 100%;
 
-.task-list {
-    list-style: none;
-    padding: 0;
+    @media (min-width: $breakpoint-lg) {
+        width: 50%;
+    }
 }
 
 .no-tasks-message {
@@ -131,93 +164,111 @@ button {
     font-style: italic;
     color: #888;
 }
-// Define keyframes for the popurri animation
-@keyframes popurri {
-    0% {
-      transform: scale(1) rotate(0deg);   // Normal size, no rotation
-      opacity: 1;
+
+
+
+// Task Item Styles
+.task-item {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+
+    &.completed {
+ 
+
+        .complete-btn {
+            display: none;
+        }
     }
-    20% {
-      transform: scale(1.2) rotate(10deg); // Slight scale and rotate
-      opacity: 0.9;
-    }
-    40% {
-      transform: scale(0.9) rotate(-15deg); // Shrink and rotate the other way
-      opacity: 1;
-    }
-    60% {
-      transform: scale(1.3) rotate(5deg);  // Big bounce up
-      opacity: 0.8;
-    }
-    80% {
-      transform: scale(1.1) rotate(-10deg); // Shrink down again
-      opacity: 0.9;
-    }
-    100% {
-      transform: scale(1) rotate(0deg);    // Back to normal
-      opacity: 1;
-    }
-  }
-  
-  // Confetti keyframe for fun little confetti particles
-  @keyframes confetti {
-    0% {
-      opacity: 1;
-      transform: translateY(0) rotate(0deg); // Start from top
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(100px) rotate(360deg); // Fall down and rotate
-    }
-  }
-  
-  // Styling for the completed tasks with popurri effect
-  .task-item{
+}
+
+
+
+
+.priority-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: calc(100% - 48px - 16px);
+}
+
+.priority-checkbox {
+  display: none;
+}
+
+.priority-btn {
+  @extend %priority-tag ;
+cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.priority-btn:hover,.priority-checkbox:checked + .priority-btn {
+  background-color: #fff;
+}
+
+.low-priority {
+  @extend %priority-tag;
+  background-color: #2196F3; // Blue
+  border: 1px solid #1976D2;
+}
+
+.medium-priority {
+  @extend %priority-tag;
+  background-color: #FFC107; // Yellow
+  border: 1px solid #FFA000;
+}
+
+.high-priority {
+  @extend %priority-tag;
+  background-color: #F44336; // Red
+  border: 1px solid #D32F2F;
+}
+form{
+display: flex;
+flex-wrap: wrap;
+gap:16px;
+border: 1px solid #ddd;
+border-radius: 4px;
 padding: 10px;
-border-radius: 10px;
-border: 1px solid #ccc;
-  
-  
-  &.completed {
-    animation: popurri 0.7s ease-in-out; // Apply the animation when a task is marked as completed
-    background-color: #d1f9d6; // Fun background color to indicate completion
-    border-color: #2ecc71; // Add a border to match
-    position: relative; // Ensure confetti can be positioned inside
-    .complete-btn{
-        display: none;
-    }
+margin-bottom: 36px;
+position: relative;
+.error-message {
+  color: #000;
+  background-color: rgb(219, 118, 118);
+  padding: 10px;
+  opacity: 0; /* Start hidden */
+  transform: scale(0.9); /* Slightly smaller */
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  position: absolute;
+
+  font-size: 14px;
+  display: block; /* Keep it in the flow */
+  position: absolute;
+  top: 44px;
+  left: 50%;
+
+}
+
+.error-message.visible {
+  opacity: 1; /* Fade in */
+  transform: scale(1); /* Scale to normal size */
+}
+
+.add-task-btn{
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  color: $primary-color;
+  background-color: rgba(211, 47, 47,.5);
+  border:1px solid rgba(211, 47, 47,.5);
+  font-size: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color .3s ease;
+  &:hover{
+    background-color:#fff ;
+
   }
 }
-  // Optional: Make the task buttons a bit fancier on hover
-  .complete-btn:hover,
-  .delete-btn:hover {
-    transform: scale(1.2) rotate(10deg); // Make the buttons grow and rotate a bit on hover
-    transition: transform 0.2s;
-  }
-  
-  // Confetti pieces when task is completed
-  .task-item.completed::before,
-  .task-item.completed::after {
-    content: '';
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background-color: #EB3F43; // Fun confetti color
-    top: -10px;
-    left: 50%;
-    border-radius: 50%;
-    transform: translateX(-50%);
-    animation: confetti 0.5s ease-out forwards;
-  }
-  
-  .task-item.completed::after {
-    left: 60%; // Make sure they don't overlap
-    animation-delay: 0.1s; // Add a small delay for effect
-  }
-  .column{
-width: 100%;
-    @media (min-width: $breakpoint-lg) {
-            width: 50%;
-        }
-        
-  }
+}

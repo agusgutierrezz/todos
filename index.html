@@ -3,23 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Responsive Todo List</title>
+  <title>Todos</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <link rel="stylesheet" href="dist/css/style.css">
 </head>
 <body>
   <div class="todo-container container">
-    <h1>Todo List</h1>
+    <div class="brand">
+      <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="18" fill="#EB3F43" />
+      </svg>
+      <h1>Todos</h1>      
+    </div>
     <form id="task-form">
         <input type="text" id="task-input" placeholder="Add a new task...">
-        <label for="priority">Priority:</label>
-        <select id="task-priority">
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-        <button id="add-task-btn" type="submit">Add Task</button>
+        <div class="priority-group">
+          <label for="priority">Priority:</label>
+          <div class="checkgroup">
+            <input type="checkbox" id="priority-low" name="priority" value="low" class=" priority-checkbox">
+            <label for="priority-low" class="priority-btn low-priority">Low</label>
+          
+            <input type="checkbox" id="priority-medium" name="priority" value="medium" class="priority-checkbox ">
+            <label for="priority-medium" class="priority-btn medium-priority">Medium</label>
+          
+            <input type="checkbox" id="priority-high" name="priority" value="high" class="priority-checkbox">
+            <label for="priority-high" class="priority-btn  high-priority">High</label>
+
+          </div>
+        </div>
+        <button class="add-task-btn" id="add-task-btn" type="submit">&#43;</button>
         <span id="error-message" class="error-message"></span>
     </form>
     <div class="filters">
@@ -28,14 +42,14 @@
       <button class="filter-btn" data-filter="pending">Pending</button>
     </div>
     
-  <div id="pending-list-container">
+  <div id="pending-list-container" class="tasks-column">
     <h3>Pending Tasks</h3>
     <ul id="pending-list"></ul>
     <span id="pending-message" class="no-tasks-message">No pending tasks yet.</span>
 
   </div>
   
-  <div id="completed-list-container">
+  <div id="completed-list-container" class="tasks-column">
     <h3>Completed Tasks</h3>
     <ul id="completed-list"></ul>
     <span id="completed-message" class="no-tasks-message">No completed tasks yet.</span>
