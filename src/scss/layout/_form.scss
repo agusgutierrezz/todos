@@ -1,0 +1,97 @@
+.add-task-form {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid #E6E4F0;
+  background-color: #F9F8FF;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 36px;
+  @media (min-width: $breakpoint-md) {
+    width: calc(50% - 68px);
+} 
+  .task-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+
+  .error-message {
+    color: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 12px 24px;
+    opacity: 0;
+    transform: scaleY(0.9) translateY(-56px);
+    border-radius: 0 0 13px 13px;
+    font-size: 18px;
+    display: block;
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .error-message.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  .add-task-btn {
+    @extend %btn;
+    width: 42px;
+    height: 42px;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .priority-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: calc(100% - 42px - 16px);
+
+    p {
+      font-size: 14px;
+      font-weight: bold;
+      margin: 0;
+      color:#9896A3;
+  
+    }
+    .checkgroup{
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+      border-radius: 13px;
+    }
+    .priority-checkbox {
+      display: none;
+    }
+
+    .priority-btn {
+      @extend %priority-tag;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover,
+      &:checked+.priority-btn {
+        background-color: #fff;
+
+      }
+    }
+
+
+  }
+}

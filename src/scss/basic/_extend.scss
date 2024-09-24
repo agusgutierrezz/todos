@@ -1,0 +1,67 @@
+$primary-color: #EB3F43;
+$completed-color: #d3d3d3;
+
+%btn{
+  background-color: #CCD7FF;
+  color: #5577FF;
+  padding: 6px;
+  border-radius: 5px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #5577FF;
+  cursor: pointer;
+  transition: all .3s ease;
+
+  &.active,&:hover{
+      background-color: #fff;
+      color:#5577FF;
+  
+  }
+}
+
+%priority-tag {
+    padding:4px 10px;
+    font-size: 12px;
+    border:1px solid;
+    font-weight: bold;
+    border-radius: 33px;
+    text-transform: capitalize;
+    display: flex;
+    justify-content: center;
+  }
+
+  .low-priority {
+    @extend %priority-tag;
+    background-color: #B3EADB;
+    border: 1px solid #00B884;
+    color:#00B884;
+  }
+
+  .medium-priority {
+    @extend %priority-tag;
+    background-color: #FBEAB3;
+    border: 1px solid #FFC800;
+    color: #FFC800;
+  }
+
+  .high-priority {
+    @extend %priority-tag;
+    background-color: #FFD5E7;
+    border: 1px solid #FD71AF;
+    color:#FD71AF;
+  }
+  .container {
+    padding: 20px;
+
+    @media (min-width: $breakpoint-md) {
+        padding: 30px;
+    }
+
+    @media (min-width: $breakpoint-lg) {
+        padding: 40px;
+    }
+
+    @media (min-width: $breakpoint-xl) {
+        padding: 50px;
+    }
+}

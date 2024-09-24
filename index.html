@@ -1,62 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todos</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="dist/css/style.css">
 </head>
+
 <body>
   <div class="todo-container container">
     <div class="brand">
       <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="18" cy="18" r="18" fill="#EB3F43" />
+        <circle cx="18" cy="18" r="18" fill="#FD71AF" />
       </svg>
-      <h1>Todos</h1>      
+      <h1>Todos</h1>
     </div>
-    <form id="task-form">
-        <input type="text" id="task-input" placeholder="Add a new task...">
-        <div class="priority-group">
-          <label for="priority">Priority:</label>
-          <div class="checkgroup">
-            <input type="checkbox" id="priority-low" name="priority" value="low" class=" priority-checkbox">
-            <label for="priority-low" class="priority-btn low-priority">Low</label>
-          
-            <input type="checkbox" id="priority-medium" name="priority" value="medium" class="priority-checkbox ">
-            <label for="priority-medium" class="priority-btn medium-priority">Medium</label>
-          
-            <input type="checkbox" id="priority-high" name="priority" value="high" class="priority-checkbox">
-            <label for="priority-high" class="priority-btn  high-priority">High</label>
+    <form id="task-form" class="add-task-form">
+      <input type="text" class="task-input" id="task-input" placeholder="e.g., Finish Ogilvy test...">
+      <div class="priority-group">
+        <p>Priority</p>
+        <div class="checkgroup">
+          <input type="checkbox" id="priority-low" name="priority" value="low" class=" priority-checkbox">
+          <label for="priority-low" class="priority-btn low-priority">Low</label>
 
-          </div>
+          <input type="checkbox" id="priority-medium" name="priority" value="medium" class="priority-checkbox ">
+          <label for="priority-medium" class="priority-btn medium-priority">Medium</label>
+
+          <input type="checkbox" id="priority-high" name="priority" value="high" class="priority-checkbox">
+          <label for="priority-high" class="priority-btn  high-priority">High</label>
+
         </div>
-        <button class="add-task-btn" id="add-task-btn" type="submit">&#43;</button>
-        <span id="error-message" class="error-message"></span>
+      </div>
+      <button class="add-task-btn" id="add-task-btn" type="submit">&#43;</button>
+      <span id="error-message" class="error-message"></span>
     </form>
     <div class="filters">
       <button class="filter-btn" data-filter="all">All</button>
       <button class="filter-btn" data-filter="completed">Completed</button>
       <button class="filter-btn" data-filter="pending">Pending</button>
     </div>
-    
-  <div id="pending-list-container" class="tasks-column">
-    <h3>Pending Tasks</h3>
-    <ul id="pending-list"></ul>
-    <span id="pending-message" class="no-tasks-message">No pending tasks yet.</span>
+    <div class="lists-container">
+      <div id="pending-list-container" class="pending tasks-column">
+        <h3>Pending Tasks</h3>
+        <ul id="pending-list"></ul>
+        <span id="pending-message" class="no-tasks-message">Your task list is as empty as a cookie jar!  🍪 <br/>Keep it that way!</span>
 
-  </div>
-  
-  <div id="completed-list-container" class="tasks-column">
-    <h3>Completed Tasks</h3>
-    <ul id="completed-list"></ul>
-    <span id="completed-message" class="no-tasks-message">No completed tasks yet.</span>
-    
-  </div>
+      </div>
+
+      <div id="completed-list-container" class="complete tasks-column">
+        <h3>Completed Tasks</h3>
+        <ul id="completed-list"></ul>
+        <span id="completed-message" class="no-tasks-message">All tasks are complete! Time to celebrate your awesomeness! 🎉</span>
+
+      </div>
+    </div>
+
   </div>
 
   <script src="app.js"></script>
 </body>
+
 </html>

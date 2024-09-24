@@ -43,19 +43,21 @@ function createTaskItem(task) {
     taskPriority.classList.add('task-tag');
     taskPriority.innerText = task.priority;
 
+
+    const completeBtn = document.createElement('button');
+    completeBtn.classList.add('complete-btn');
+
+    taskContent.appendChild(completeBtn);
     taskContent.appendChild(taskText);
     taskContent.appendChild(taskPriority);
 
-    const completeBtn = document.createElement('button');
-    completeBtn.innerHTML = '<i class="fas fa-check"></i>';
-    completeBtn.classList.add('complete-btn');
 
     const deleteBtn = document.createElement('button');
     deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
     deleteBtn.classList.add('delete-btn');
 
+    
     taskItem.appendChild(taskContent);
-    taskItem.appendChild(completeBtn);
     taskItem.appendChild(deleteBtn);
 
     return taskItem;
@@ -78,7 +80,7 @@ priorityCheckboxes.forEach(checkbox => {
 
 function getSelectedPriority() {
   const selected = document.querySelector('.priority-checkbox:checked');
-  return selected ? selected.value : 'Low'; // Default to 'low' if none is selected
+  return selected ? selected.value : 'low'; // Default to 'low' if none is selected
 }
 
 // Inside addTask function, update this to get the priority from checkboxes
@@ -133,46 +135,84 @@ function validateInput(taskText) {
 }
 
 function handleTaskAction(e) {
-  // Find the closest 'li' element regardless of whether the button or icon is clicked
   const taskItem = e.target.closest('.task-item');
   
-  // If the task item is not found, exit early
   if (!taskItem) return;
-
-  // Get the task ID
   const id = taskItem.getAttribute('data-id');
 
-  // Check if a delete or complete button was clicked
   if (e.target.closest('.delete-btn')) {
-    // Delete the task
     removeTaskFromLocalStorage(id);
     taskItem.remove();
+    toggleNoTasksMessage(); // Call immediately after task deletion
   } else if (e.target.closest('.complete-btn')) {
-    // Toggle task completion
-    toggleTaskCompletion(id);
-    taskItem.classList.toggle('completed');
+    taskItem.classList.add('task-complete-animation');
 
-    // Move the task between pending and completed lists
-    if (taskItem.classList.contains('completed')) {
-      completedList.appendChild(taskItem);
-    } else {
-      pendingList.appendChild(taskItem);
-    }
+    setTimeout(() => {
+      toggleTaskCompletion(id);
+      taskItem.classList.toggle('completed');
+
+      if (taskItem.classList.contains('completed')) {
+        completedList.appendChild(taskItem);
+      } else {
+        pendingList.appendChild(taskItem);
+      }
+
+      setTimeout(() => {
+        taskItem.classList.remove('task-complete-animation');
+      }, 1000);
+
+      toggleNoTasksMessage(); // Call immediately after task completion
+    }, 500);
+  }
+}
+
+// Updated toggleNoTasksMessage function
+function toggleNoTasksMessage() {
+  const noPendingMessage = document.getElementById('pending-message');
+  const noCompletedMessage = document.getElementById('completed-message');
+
+  const pendingTasks = pendingList.querySelectorAll('.task-item:not(.completed)');
+  const completedTasks = completedList.querySelectorAll('.task-item.completed');
+
+  // Immediately check pending tasks and toggle visibility
+  noPendingMessage.style.display = pendingTasks.length === 0 ? 'block' : 'none';
+  
+  // Immediately check completed tasks and toggle visibility
+  noCompletedMessage.style.display = completedTasks.length === 0 ? 'block' : 'none';
+}
+
+// Call toggleNoTasksMessage when tasks are added
+function addTask() {
+  const taskText = taskInput.value;
+  const priority = getSelectedPriority();
+
+  if (!validateInput(taskText)) {
+    return;
   }
 
-  // Check for empty lists and toggle messages
-  toggleNoTasksMessage();
+  const task = {
+    id: Date.now(),
+    text: taskText,
+    priority: priority,
+    completed: false
+  };
+
+  saveTaskToLocalStorage(task);
+  const taskItem = createTaskItem(task);
+
+  pendingList.appendChild(taskItem);
+  taskInput.value = '';
+  priorityCheckboxes.forEach(box => box.checked = false); // Reset checkboxes
+
+  toggleNoTasksMessage(); // Ensure the message updates immediately after adding
 }
 
+// Ensure to call it when tasks are loaded from local storage
+document.addEventListener('DOMContentLoaded', function() {
+  loadTasksFromLocalStorage();
+  toggleNoTasksMessage(); // Call right after loading tasks
+});
 
-// Toggle the visibility of "no tasks" messages
-function toggleNoTasksMessage() {
-    const noPendingMessage = document.getElementById('pending-message');
-    const noCompletedMessage = document.getElementById('completed-message');
-
-    noPendingMessage.style.display = pendingList.children.length === 0 ? 'block' : 'none';
-    noCompletedMessage.style.display = completedList.children.length === 0 ? 'block' : 'none';
-}
 
 // Toggle task completion in local storage
 function toggleTaskCompletion(id) {
@@ -186,32 +226,38 @@ function toggleTaskCompletion(id) {
 
 // Filter tasks (all, completed, pending)
 function filterTasks(event) {
-    const filterType = event.target.getAttribute('data-filter');
-    const taskItems = document.querySelectorAll('.task-item');
+  const filterType = event.target.getAttribute('data-filter');
+  const taskItems = document.querySelectorAll('.task-item');
 
-    const pendingContainer = document.getElementById('pending-list-container');
-    const completedContainer = document.getElementById('completed-list-container');
+  const pendingContainer = document.getElementById('pending-list-container');
+  const completedContainer = document.getElementById('completed-list-container');
 
-    taskItems.forEach(taskItem => {
-        const isCompleted = taskItem.classList.contains('completed');
+  // Remove "active" class from all filter buttons
+  filterBtns.forEach(btn => btn.classList.remove('active'));
 
-        if (filterType === 'all') {
-            taskItem.style.display = 'flex';
-            pendingContainer.style.display = 'flex';
-            completedContainer.style.display = 'flex';
-        } else if (filterType === 'completed') {
-            taskItem.style.display = isCompleted ? 'flex' : 'none';
-            pendingContainer.style.display = 'none';
-            completedContainer.style.display = 'flex';
-        } else if (filterType === 'pending') {
-            taskItem.style.display = !isCompleted ? 'flex' : 'none';
-            pendingContainer.style.display = 'flex';
-            completedContainer.style.display = 'none';
-        }
-    });
+  event.target.classList.add('active');
 
-    toggleNoTasksMessage();
+  taskItems.forEach(taskItem => {
+      const isCompleted = taskItem.classList.contains('completed');
+
+      if (filterType === 'all') {
+          taskItem.style.display = 'flex';
+          pendingContainer.style.display = 'flex';
+          completedContainer.style.display = 'flex';
+      } else if (filterType === 'completed') {
+          taskItem.style.display = isCompleted ? 'flex' : 'none';
+          pendingContainer.style.display = 'none';
+          completedContainer.style.display = 'flex';
+      } else if (filterType === 'pending') {
+          taskItem.style.display = !isCompleted ? 'flex' : 'none';
+          pendingContainer.style.display = 'flex';
+          completedContainer.style.display = 'none';
+      }
+  });
+
+  toggleNoTasksMessage();
 }
+
 
 // Save task to local storage
 function saveTaskToLocalStorage(task) {
