@@ -26,8 +26,3 @@ This project is a **responsive** and dynamic **Todo List** application that allo
 - **Local Storage**: Tasks persist across sessions using the browser’s local storage.
 - **Dynamic Task Management**: Add, delete, and filter tasks without reloading the page.
 
-## Installation 🖥️
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/todo-app.git
