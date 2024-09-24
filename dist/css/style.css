@@ -68,16 +68,16 @@
     opacity: 1;
   }
   40% {
-    transform: scale(1.02) rotate(3deg); /* Slight scale-up and rotation */
-    opacity: 1; /* Keep full opacity during this phase */
+    transform: scale(1.02) rotate(3deg);
+    opacity: 1;
   }
   60% {
-    transform: scale(0.98) rotate(-3deg); /* Slight scale-down and reverse rotation */
-    opacity: 1; /* Keep full opacity */
+    transform: scale(0.98) rotate(-3deg);
+    opacity: 1;
   }
   100% {
-    transform: scale(1) rotate(0deg); /* Return to original size and rotation */
-    opacity: 0.9; /* Slightly fade out to maintain visibility */
+    transform: scale(1) rotate(0deg);
+    opacity: 0.9;
   }
 }
 .add-task-form {
